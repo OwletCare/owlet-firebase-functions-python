@@ -25,6 +25,7 @@ import firebase_functions.private.path_pattern as _path_pattern
 import firebase_functions.core as _core
 import cloudevents.http as _ce
 
+from functions_framework import logging as _logging
 from firebase_admin import initialize_app, get_app, _apps, _DEFAULT_APP_NAME
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.firestore_v1 import _helpers as _firestore_helpers
@@ -211,8 +212,8 @@ def _firestore_endpoint_handler(
     func = _core._with_init(func)
 
     if event_type.endswith(".withAuthContext"):
-        console.log("event_type: ", event_type)
-        console.log("event_attributes: ", event_attributes);
+        _logging.info("event_type: %s", event_type)
+        _logging.info("event_attributes: %s", event_attributes);
         event_auth_type = event_attributes["authtype"]
         event_auth_id = event_attributes["authid"]
         database_event_with_auth_context = AuthEvent(**vars(database_event),
